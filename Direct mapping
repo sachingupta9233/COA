@@ -1,0 +1,36 @@
+import math
+
+def direct_mapping():
+    cache_size_kb = int(input("Enter size of Cache memory (in KB): "))
+    main_size_mb = int(input("Enter size of Main memory (in MB): "))
+    line_size = int(input("Enter size of each cache line (in Bytes): "))
+
+    cache_size = cache_size_kb * 1024
+    main_size = main_size_mb * 1024 * 1024
+    address_bits = int(math.log2(main_size))
+
+    cache_banks = 1
+    cache_bank_size = cache_size // cache_banks
+    cache_lines = cache_bank_size // line_size
+    main_blocks = main_size // line_size
+    byte_bits = int(math.log2(line_size))
+    line_bits = int(math.log2(cache_lines))
+    tag_bits = address_bits - (byte_bits + line_bits)
+
+    print("\n---------- Direct Mapping Results ----------")
+    print(f"Cache Memory Size = {cache_size_kb} KB")
+    print(f"Main Memory Size = {main_size_mb} MB")
+    print(f"Address Size = {address_bits} bits")
+    print(f"Cache Line Size = {line_size} bytes")
+    print(f"Cache Lines = {cache_lines}")
+    print(f"Main Memory Blocks = {main_blocks}")
+    print(f"Byte Offset Bits = {byte_bits}")
+    print(f"Line Index Bits = {line_bits}")
+    print(f"Tag Bits = {tag_bits}")
+
+    block_num = int(input("\nEnter a Main Memory Block Number: "))
+    cache_line = block_num % cache_lines
+    print(f"Block {block_num} ⇒ Cache Line {cache_line}")
+
+if __name__ == "__main__":
+    direct_mapping()

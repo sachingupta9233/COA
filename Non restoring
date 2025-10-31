@@ -1,0 +1,40 @@
+def to_binary(num, bits):
+    return format(num, f'0{bits}b')
+
+M = int(input("Enter the Divisor (M) = "))
+Q = int(input("Enter the Dividend (Q) = "))
+
+n = max(M, Q).bit_length()
+
+Q_bin = to_binary(Q, n)
+M_bin = to_binary(M, n)
+
+A = 0
+Q_reg = Q
+count = n
+
+while count > 0:
+    # Left shift A and Q
+    A = (A << 1) | ((Q_reg >> (n - 1)) & 1)
+    Q_reg = (Q_reg << 1) & ((1 << n) - 1)
+
+    # A = A - M (Trial Subtraction)
+    A = A - M
+
+    # Check if A becomes negative
+    if A < 0:
+        A = A + M  # Restore
+        Q_reg &= ~1  # Set LSB of Q_reg = 0
+    else:
+        Q_reg |= 1  # Set LSB of Q_reg = 1
+
+    count -= 1
+
+# Final restoring step
+if A < 0:
+    A = A + M
+
+print(f"\nBinary representation of Dividend (Q) = {Q_bin}")
+print(f"Binary representation of Divisor (M) = {M_bin}")
+print(f"Quotient in binary = {to_binary(Q_reg, n)}")
+print(f"Remainder in binary = {to_binary(A, n)}")

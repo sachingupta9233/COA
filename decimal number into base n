@@ -1,29 +1,34 @@
 def decimal_integer_to_base(integer_part, base):
-if integer_part == 0:
-return "0"
-result = ""
-while integer_part > 0:
-result = str(integer_part % base) + result
-integer_part //= base
-return result
+    if integer_part == 0:
+        return "0"
+    result = ""
+    while integer_part > 0:
+        result = str(integer_part % base) + result
+        integer_part //= base
+    return result
+
+
 def decimal_fraction_to_base(fractional_part, base, precision=10):
-result = ""
-count = 0
-while fractional_part > 0 and count < precision:
-fractional_part *= base
-digit = int(fractional_part)
-result += str(digit)
-fractional_part -= digit
-count += 1
-return result
+    result = ""
+    count = 0
+    while fractional_part > 0 and count < precision:
+        fractional_part *= base
+        digit = int(fractional_part)
+        result += str(digit)
+        fractional_part -= digit
+        count += 1
+    return result
+
+
 decimal_number = float(input("Enter the Input decimal number = "))
 base = int(input("Enter the base of the destination number system = "))
+
 integer_part = int(decimal_number)
 fractional_part = decimal_number - integer_part
+
 converted_integer = decimal_integer_to_base(integer_part, base)
 converted_fraction = decimal_fraction_to_base(fractional_part, base)
+
 print(f"Decimal {integer_part} converted into Base-{base} system = {converted_integer}")
-print(f"Fractional decimal {fractional_part} converted into Base-{base} system = 0.
-{converted_fraction}")
-print(f"Hence, Base-{base} equivalent of input decimal = {converted_integer}.
-{converted_fraction}”)
+print(f"Fractional decimal {fractional_part} converted into Base-{base} system = 0.{converted_fraction}")
+print(f"Hence, Base-{base} equivalent of input decimal = {converted_integer}.{converted_fraction}")

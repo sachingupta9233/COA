@@ -1,0 +1,35 @@
+def cache_mapping():
+    cache_kb = int(input("Size of Cache memory (in KB) = "))
+    main_mb = int(input("Size of Main memory (in MB) = "))
+    line_size = int(input("Size of each cache line (in Bytes) = "))
+
+    cache_bytes = cache_kb * 1024
+    main_bytes = main_mb * 1024 * 1024
+
+    addr_bits = main_bytes.bit_length() - 1
+
+    print(f"\nMain memory address = {addr_bits} bits")
+    print("Select cache mapping policy: Direct mapping")
+
+    cache_banks = 1
+    cache_lines = cache_bytes 
+    memory_blocks = main_bytes 
+
+    print(f"Number of cache banks = {cache_banks}")
+    print(f"Hence, size of cache bank = {cache_kb} KB")
+    print(f"Cache lines per cache bank = {cache_lines}")
+    print(f"Number of main memory blocks = {memory_blocks}")
+
+    byte_bits = (line_size).bit_length() - 1
+    line_bits = (cache_lines).bit_length() - 1
+    tag_bits = addr_bits - (byte_bits + line_bits)
+
+    print(f"\nMain memory address of {addr_bits} bits is interpreted in 3 fields:")
+    print(f" → LSB {byte_bits} bits for Byte selection")
+    print(f" → Middle {line_bits} bits for Cache line selection")
+    print(f" → MSB {tag_bits} bits for Tags")
+
+    block_num = int(input("\nInput any Main memory block number for cache mapping = "))
+    print(f"Block {block_num} is mapped into cache line number = {block_num % cache_lines}")
+
+cache_mapping()

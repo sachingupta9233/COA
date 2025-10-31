@@ -1,0 +1,44 @@
+def multilevel_memory():
+    n = int(input("Input the hierarchical levels (2 or 3): "))
+    
+    if n not in (2, 3):
+        print("Number of levels must be 2 or 3.")
+        return
+
+    C, S, H, t = [], [], [], []
+
+    for i in range(1, n + 1):
+        print(f"\nEnter details for Level {i}:")
+        C_i = float(input(f"Cost per bit C{i} (in INR): "))
+        S_i = float(input(f"Size S{i} (bits): "))
+
+        if i != n:
+            H_i = float(input(f"Hit ratio H{i}: "))
+        else:
+            H_i = 1.0
+            print(f"Hit ratio H{i} is fixed to 1.")
+
+        t_i = float(input(f"Access time t{i} (in microseconds): "))
+
+        C.append(C_i)
+        S.append(S_i)
+        H.append(H_i)
+        t.append(t_i)
+
+    # Average Cost per Bit
+    Cav = sum(C[i] * S[i] for i in range(n)) / sum(S)
+
+    # Average Access Time
+    if n == 2:
+        tav = H[0] * t[0] + (1 - H[0]) * t[1]
+    else:
+        tav = (H[0] * t[0]
+               + (1 - H[0]) * H[1] * t[1]
+               + (1 - H[0]) * (1 - H[1]) * t[2])
+
+    print("\n========== Results ==========")
+    print(f"Average cost per bit (INR): {Cav:.7f}")
+    print(f"Average access time: {tav:.2f} microseconds")
+
+
+multilevel_memory()

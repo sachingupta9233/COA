@@ -1,0 +1,35 @@
+import math
+
+def fully_associative_mapping():
+    cache_size_kb = int(input("Enter size of Cache memory (in KB): "))
+    main_size_mb = int(input("Enter size of Main memory (in MB): "))
+    line_size = int(input("Enter size of each cache line (in Bytes): "))
+
+    cache_size = cache_size_kb * 1024
+    main_size = main_size_mb * 1024 * 1024
+    address_bits = int(math.log2(main_size))
+
+    cache_banks = 1
+    cache_bank_size = cache_size // cache_banks
+    cache_lines = cache_bank_size // line_size
+    main_blocks = main_size // line_size
+    byte_bits = int(math.log2(line_size))
+
+    tag_bits = address_bits - byte_bits
+
+    print("\nCache mapping policy: Fully Associative Mapping")
+    print(f"Cache lines = {cache_lines} (0 to {cache_lines - 1})")
+    print(f"Main memory blocks = {main_blocks} (0 to {main_blocks - 1})")
+
+    block_num = int(input("\nEnter any Main memory block number: "))
+    cache_line = int(input(f"Enter cache line number where block should go (0 to {cache_lines - 1}): "))
+    
+    print(f"\nBlock {block_num} can be stored in cache line = {cache_line}")
+
+    print(f"\nAddress Format ({address_bits} bits):")
+    print(f"Byte Offset = {byte_bits} bits")
+    print("Line Index = 0 bits (Fully Associative)")
+    print(f"Tag = {tag_bits} bits")
+
+if __name__ == "__main__":
+    fully_associative_mapping()

@@ -1,0 +1,29 @@
+def to_binary(n, bits):
+if n >= 0:
+else:
+return format(n, '0{}b'.format(bits))
+return format((1 << bits) + n, '0{}b'.format(bits))
+def booth_multiplier(m, q):
+n = max(m.bit_length(), q.bit_length()) + 1
+m_bin = to_binary(m, n)
+q_bin = to_binary(q, n)
+print(f"Binary representation of Multiplicand (Q) = {q_bin}")
+print(f"Binary representation of Multiplier (M) = {m_bin}")
+A = m << n
+S = (-m & ((1 << n) - 1)) << n
+P = (q & ((1 << n) - 1))
+P = P | (0 << n)
+P = P & ((1 << (2 * n)) - 1)
+count = n
+while count > 0:
+if (P & 3) == 1:
+P = (P + A) & ((1 << (2 * n)) - 1)
+elif (P & 3) == 2:
+P = (P + S) & ((1 << (2 * n)) - 1)
+P = (P >> 1) | ((P & (1 << (2 * n - 1))) << 1)
+count -= 1
+result_bin = format(P >> 1, '0{}b'.format(2 * n))
+print(f"Result of multiplication in binary = {result_bin}")
+m = int(input("Enter Multiplier (M): "))
+q = int(input("Enter Multiplicand (Q): "))
+booth_multiplier(m, q)

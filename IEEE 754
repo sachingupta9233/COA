@@ -1,0 +1,58 @@
+import struct
+
+def float_to_ieee754(num):
+    print(f"Enter the Decimal Number = {num}")
+
+    # Break number into integer and fractional parts
+    int_part = int(abs(num))
+    frac_part = abs(num) - int_part
+
+    # Convert integer part to binary
+    int_bin = bin(int_part).replace("0b", "")
+
+    # Convert fractional part to binary
+    frac_bin = ""
+    while frac_part and len(frac_bin) < 23:
+        frac_part *= 2
+        if frac_part >= 1:
+            frac_bin += "1"
+            frac_part -= 1
+        else:
+            frac_bin += "0"
+
+    print(f"Given number in Binary = {int_bin}.{frac_bin}")
+
+    # Scientific notation normalization
+    shift = len(int_bin) - 1
+    mantissa = int_bin[1:] + frac_bin
+    print(f"Given number in Scientific Notation = 1.{mantissa} * 2^{shift}")
+    print(f"Real Exponent = {shift}")
+
+    # Biased exponent
+    biased_exp = shift + 127
+    exp_bin = format(biased_exp, "08b")
+    print(f"Select the destination floating point format = 32 bit")
+    print(f"Biased Exponent = {shift} + 127 = {biased_exp} = {exp_bin}")
+
+    # Format mantissa to 23 bits
+    mantissa_23 = (mantissa + "0" * 23)[:23]
+    print(f"Actual fractional part = {mantissa}")
+    print(f"Mantissa of 23 bits = {mantissa_23}")
+
+    # Determine sign bit
+    sign_bit = "0" if num >= 0 else "1"
+    print(f"Sign bit = {sign_bit}")
+
+    # Final 32-bit IEEE754 format
+    ieee_32bit = sign_bit + exp_bin + mantissa_23
+    print(f"32 bit representation = {ieee_32bit}")
+
+    # Hex format using struct module
+    packed = struct.pack('!f', num)
+    hex_str = hex(int.from_bytes(packed, 'big')).upper().replace("0X", "")
+    print(f"Hex representation = {hex_str}")
+
+
+# Driver Code
+num = float(input("Enter a decimal number: "))
+float_to_ieee754(num)
